@@ -2,40 +2,38 @@
 public class InterfaceApp {
 
 	public static void main(String[] args) {
-		// 더하기 기능이 있는 클래스를 외주에 맡겼다고 가정
-//		DummyCal c = new DummyCal();
-		RealCal c = new RealCal();	// 외주업체로부터 납품 받은 클래스가 인터페이스를 통해 구현이 되었다면 원하는 규격으로 구현 됐을 거라는 확실성이 있기 때문에 가짜 클래스에서 바로 바꿔서 사용이 가능하다.
+//		Calculable c = new RealCal();	// 인스턴스는 상속 받은 부모 클래스나, 구현한 인터페이스로 데이터 타입을 가질 수 있다.
+		Calculable c = new AdvancedCalcular();	// 다른 Calculable 인터페이스를 구현한 클래스로 바꾸어주어도 이상이 없을 거라는 확실성을 갖게 된다. 즉, 호환성을 보장할 수 있다.
 		System.out.println(c.sum(2, 1));
-		c.print();
+//		c.print();	// RealCal의 인터페이스인 Calculable을 데이터 타입으로 갖고 있기 때문에 Calculable 인터페이스에 없는 print() 메소드를 사용할 수 없다.
 		System.out.println(c.PI);
 	}
-
+	// 인스턴스의 데이터 타입을 바꿈으로써 자신이 필요한 기능을 제외한 기능들을 비활성화(?) 시킬 수 있다. 그래서 자신이 필요한 기능의 사용법만 익혀서 사용할 수 있다.
 }
 
-interface Calculable {	// 인터페이스에는 메소드와 변수가 정의될 수 있는데, 변수에는 할당을 해주고, 메소드에는 실제 구현이 들어가지 않는다. 인터페이스를 구현하는 클래스는 인터페이스에 정의된 메소드 형태에 따라 실제 구현을 해야한다.
-	double PI = 3.14; // 인터페이스에서도 변수를 정의할 땐, 내용을 적는다. 인터페이스를 구현하는 클래스에 변수는 따로 정의하지 않아도 된다.
-	int sum(int v1, int v2);	// int형의 매개 변수 두 개를 받고, 출력 또한 int형인 sum이라는 이름의 메소드가 존재해야한다고 강제
+interface Calculable {
+	double PI = 3.14;
+	int sum(int v1, int v2);
 }
 
-interface Printable {	// 인터페이스 생성
-	void print();	// 메소드 정의, 인터페이스에서 메소드를 정의할 때 내용은 들어가지 않는다.
+interface Printable {
+	void print();
 }
 
-class DummyCal implements Calculable {	// 외주 맡긴 클래스를 납품 받으면 접목시킬 생각을 하고 임의의 가짜 클래스를 만들어서 사용
+class RealCal implements Calculable, Printable {
 	public int sum(int v1, int v2) {
-		return 3;
-	}
-}
-
-class RealCal implements Calculable, Printable {	// Calculable과 Printable 인터페이스를 구현하는 realCal 클래스
-	public int sum(int v1, int v2) {
-		return v1 + v2;	// 정해진 규격에 따른 메소드를 생성하면 되고, 구동 방법만 추가해주면 된다.
+		return v1 + v2;
 	}
 
-	public void print() {	// Printable 인터페이스에 있는 메소드 정의
+	public void print() {
 		System.out.println("This is RealCal!!");
 	}
 	
 }
 
-// 상속은 하나의 자식 클래스가 하나의 부모 클래스만 상속 받을 수 있지만, 인터페이스는 하나의 클래스가 여러 개의 인터페이스를 구현할 수 있다.
+class AdvancedCalcular implements Calculable {	// 다른 Calculable 인터페이스를 구현한 클래스 생성
+	public int sum(int v1, int v2) {
+		return v1 + v2;
+	}
+	
+}
